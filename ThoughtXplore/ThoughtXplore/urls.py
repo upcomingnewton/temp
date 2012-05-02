@@ -23,5 +23,6 @@ urlpatterns = patterns('',
      url(r'^note/tpo/$','ThoughtXplore.views.NotetpoIndex'),    
      url(r'^test/set/$','txUser.views.testset'),
      url(r'^test/test/$','txUser.views.test_test'),
-     url(r'^error/$','txMisc.views.ErrorHandler')
+     url(r'^error/$','txMisc.views.ErrorHandler'),
+     url(r'^message/$','txMisc.views.ErrorHandler')
 )

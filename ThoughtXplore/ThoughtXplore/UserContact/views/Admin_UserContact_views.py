@@ -1,0 +1,5 @@
+#ListUserContact,req_type
+#AddUserContactIndex
+#EditUserContactIndex
+#AddUserContact,profile_id
+#EditUserContact,profile_id

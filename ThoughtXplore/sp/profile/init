@@ -1,18 +1,6 @@
 CREATE OR REPLACE FUNCTION profile_system_initialize() RETURNS VOID AS $$
 DECLARE
  row_index INTEGER;
- result INTEGER;
- grouptypeindex INTEGER;
- groupsciindex INTEGER;
- groupentityindex INTEGER;
- var_entitysciindex INTEGER;
- var_groupsci_index INTEGER;
-var_groupentity_index INTEGER;
-var_grouptype_index INTEGER;
-var_userentity_index INTEGER;
-var_usersci_index INTEGER;
-var_usergroup_group INTEGER;
-var_users RECORD;
 var_usergroup_sci INTEGER;
 var_state_active INTEGER;
 var_state_del INTEGER;

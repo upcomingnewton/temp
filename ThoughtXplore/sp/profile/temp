@@ -1,4 +1,4 @@
-SELECT * FROM contactinfo_insert(uid,req_per,Mobileno,Phoneno,AltEmailAdress,FatherName,FatherContactNo,MotherName,MotherContactNo,AlternateAdress,Adress,by_user,ip); 
+SELECT * FROM contactinfo_insert(1,'INSERT','Mobileno','Phoneno','AltEmailAdress','FatherName','FatherContactNo','MotherName','MotherContactNo','AlternateAdress','Adress',1,'ip'); 
 
     
-SELECT * FROM contactinfo_update(uid,req_per,Mobileno,Phoneno,AltEmailAdress,FatherName,FatherContactNo,MotherName,MotherContactNo,AlternateAdress,Adress,by_user,ip,logsdec); 
+SELECT * FROM contactinfo_update(1,'UPDATE','Mobileno','Phoneno','AltEmailAdress','FatherName','FatherContactNo','MotherName','MotherContactNo','AlternateAdress','Adress',1,'ip','logsdec'); 

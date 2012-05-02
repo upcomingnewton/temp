@@ -1,0 +1,95 @@
+CREATE OR REPLACE FUNCTION txUser_user_statechange(
+csv_userid VARCHAR,
+num_val 	INTEGER,
+by_user INTEGER,
+request_group VARCHAR,
+request_permission VARCHAR,
+ip VARCHAR,
+logsdesc VARCHAR,
+OUT DeleteRows INTEGER,
+OUT result INTEGER,
+OUT rescode INTEGER
+) RETURNS RECORD AS $$
+DECLARE 
+    varrec1 RECORD;
+    varrec2 RECORD;
+    varrec3 RECORD;
+    temp INTEGER;
+    groupid INTEGER;
+    log_entry VARCHAR;
+BEGIN 
+temp := 0;
+
+SELECT * INTO varrec1 FROM CheckUserForPermission(by_user,'txUser','user',request_permission);
+IF varrec1.status <> 500 THEN
+	rescode :=  varrec1.status;
+	result := -2;
+	RETURN;
+END IF;
+
+SELECT * INTO varrec2 FROM CheckUserForPermission(by_user,'txUser','usergroup','DELETE');
+IF varrec.status <> 500 THEN
+	rescode :=  varrec2.status;
+	result := -3;
+	RETURN;
+END IF;
+
+SELECT * INTO varrec3 FROM CheckUserForPermission(by_user,'txUser','usergroup','INSERT');
+IF varrec.status <> 500 THEN
+	rescode :=  varrec3.status;
+	result := -4;
+	RETURN;
+END IF;
+
+SELECT id INTO request_group FROM "txUser_group" WHERE "GroupName"=request_group;
+IF request_group IS NULL THEN 
+	rescode :=  2141;
+	result := -1;
+	RETURN;
+END IF;
+
+EXECUTE 'UPDATE "txUser_user" SET "SCI_id"=$1 WHERE id in (' || csv_userid || ')' USING varrec.varsci;
+
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> num_val THEN 
+	rescode :=  2142;
+	result := -1;
+	RETURN;
+END IF;
+
+EXECUTE 'DELETE FROM "txUser_usergroup" WHERE "User_id" in ('  || csv_userid || ') AND SCI_id=$1' USING varrec.varsci;
+GET DIAGNOSTICS DeleteRows := ROW_COUNT;
+IF DeleteRows > num_val THEN 
+	rescode :=  2143;
+	result := -1;
+	RETURN;
+END IF;
+
+
+
+<<user_group_insert>>
+	FOR x IN  csv_userid LOOP
+			INSERT INTO "txUser_usergroup"("Group_id","User_id","SCI_id") VALUES(request_group,x,varrec.varsci);
+			GET DIAGNOSTICS temp := ROW_COUNT;
+			IF temp <> 1 THEN 
+				rescode := 2144;
+				result := -1;
+				RETURN;
+			END IF;
+		END IF;
+	END LOOP user_group_insert;
+
+
+INSERT INTO "txUser_userlogs"("LogsUser_id","LogsPCI_id","LogsObject","LogsTimeStamp","LogsIP","LogsDescription","LogsPreviousState") 
+						VALUES(varrec.userid,varrec.varpci,-1,now(),ip,logsdesc,'NULL');
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode :=  999;
+	result := -1;
+ELSE
+	rescode :=  2145;
+	result := 1;
+END IF;
+RETURN;
+END;
+$$ LANGUAGE plpgsql;

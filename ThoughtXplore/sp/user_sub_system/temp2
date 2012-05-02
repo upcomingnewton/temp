@@ -1,0 +1,27 @@
+
+MAKE DUMMY USERS - 10
+
+SELECT * FROM txUser_user_insert('test1@test.com','test1','test1_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test2@test.com','test2','test2_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test3@test.com','test3','test3_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test4@test.com','test4','test4_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test5@test.com','test5','test5_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test6@test.com','test6','test6_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test7@test.com','test7','test7_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test8@test.com','test8','test8_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test9@test.com','test9','test9_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+SELECT * FROM txUser_user_insert('test0@test.com','test0','test0_fname','test1_mname','test1_lname','f',current_date,'system','INSERT','created_users','state=;group=;',1,'test');
+
+
+
+LOGIN 
+SELECT * FROM user_login('test0@test.com','test0',1,'test',now());
+
+LOGOUT
+SELECT * FROM user_logout(30,1,now());
+
+STATE-CHANGE
+SELECT * FROM txUser_user_statechange_single(4,1,'authenticated_users','ADMIN_AU','test','logsdesc');
+
+
+

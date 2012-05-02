@@ -1,0 +1,12 @@
+2012-04-29 11:02:08,416 - simpleExample - INFO - info message
+2012-04-29 11:02:08,416 - simpleExample - WARNING - warning
+2012-04-29 11:02:08,418 - simpleExample - ERROR - error 
+2012-04-29 11:02:08,418 - simpleExample - CRITICAL - critical
+2012-04-29 11:03:15,327 test              line:62   INFO     info message
+2012-04-29 11:03:15,329 test              line:63   WARNING  warning
+2012-04-29 11:03:15,329 test              line:64   ERROR    error 
+2012-04-29 11:03:15,329 test              line:65   CRITICAL critical
+2012-04-29 11:03:57,495 test              line:62   INFO     info message
+2012-04-29 11:03:57,496 test              line:63   WARNING  warning
+2012-04-29 11:03:57,497 test              line:64   ERROR    error 
+2012-04-29 11:03:57,497 test              line:65   CRITICAL critical

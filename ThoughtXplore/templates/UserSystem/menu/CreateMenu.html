@@ -1,0 +1,96 @@
+{% extends "master1.html" %}
+{% block title %}{{ title }}{% endblock%}
+{% block master_content_center %}
+
+	<!-- empty line  -->
+		<div class="w648 h30 mb4"></div>
+   <!--  =============================== -->
+   <!-- ====== ###### TITLE ######## === -->
+    <!--  =============================== -->
+		<div class="w648 border_bottom h45 mb4 center">
+				<div style="font-size: 35px;">
+                         Create Menu
+                </div>
+		</div>
+		<!-- empty line  -->
+		<div class="w648 border_bottom h30 mb4"></div>
+		
+	<!--  =============================== -->
+   <!-- ====== ###### MESSAGE LIST ######## === -->
+    <!--  =============================== -->
+		{% if msglist|length > 0 %}
+			{% for msg in msglist %}
+				<div class="w648 border_bottom h30 mb4 font_color_red">
+						{{ msg }}
+                </div>
+			{% endfor %}
+		{% endif %}
+	<!--  =============================== -->
+   <!-- ====== ###### CONTENT ######## === -->
+    <!--  =============================== -->
+		<form  action="/user/menu/create/new/" method="post">
+		{% csrf_token %}
+		<!-- empty line  -->
+		<!--  Menu Name -->
+		<div class="w648 border_bottom h30 mb4"></div>
+			  <div class="w648 border_bottom h30 mb4">
+                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
+                           Menu Name
+                     </div>
+                     <div class="w300 hinherit float_left">
+                             <input id="CreateMenu_name" name="CreateMenu_name"" type="text" class="tb1" onfocus="on_focus(this.id)" onblur="on_blur(this.id)" />
+                     </div>
+                     <div class="w170 hinherit float_left"></div>
+                </div>
+     	<!--  menu desc  -->
+               <div class="w648 border_bottom h30 mb4">
+                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
+                           Menu Desc
+                     </div>
+                     <div class="w300 hinherit float_left">
+                            <input name="CreateMenu_desc" id="CreateMenu_desc" type="text" class="tb1" onfocus="on_focus(this.id)" onblur="on_blur(this.id)" />
+                     </div>
+                     <div class="w170 hinherit float_left"></div>
+                </div>
+        <!--  url  -->
+               <div class="w648 border_bottom h30 mb4">
+                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
+                           url
+                     </div>
+                     <div class="w300 hinherit float_left">
+                            <input name="CreateMenu_url" id="CreateMenu_url" type="text" class="tb1" onfocus="on_focus(this.id)" onblur="on_blur(this.id)" />
+                     </div>
+                     <div class="w170 hinherit float_left"></div>
+                </div>
+        <!--  micon  -->
+               <div class="w648 border_bottom h30 mb4">
+                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
+                           Menu Icon
+                     </div>
+                     <div class="w300 hinherit float_left">
+                            <input name="CreateMenu_micon" id="CreateMenu_micon" type="text" class="tb1" onfocus="on_focus(this.id)" onblur="on_blur(this.id)" />
+                     </div>
+                     <div class="w170 hinherit float_left"></div>
+                </div>
+        <!--  pid  -->
+               <div class="w648 border_bottom h30 mb4">
+                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
+                           Menu Parent
+                     </div>
+                     <div class="w300 hinherit float_left">
+							<select name="CreateMenu_parmenu" id="CreateMenu_parmenu"  class="tb2" onfocus="on_focus(this.id)" onblur="on_blur(this.id)" }} >
+                             		<option value="-1">it is a parent menu</option>
+                             		{% for menu in par_menu %}
+										<option value="{{ menu.id }}">{{ menu.MenuName}}</option>
+									{% endfor %}
+                             </select>                     
+                     </div>
+                     <div class="w170 hinherit float_left"></div>
+                </div>
+      	<!--  submit -->
+      			<div class="w648 border_bottom h30 mb4 center" >
+                     <input type="submit" value="CREATE MENU" class="center"/>
+                </div>
+		</form>
+{% endblock %}
+

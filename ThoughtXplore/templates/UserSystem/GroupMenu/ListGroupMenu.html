@@ -1,0 +1,78 @@
+{% extends "master2.html" %}
+    {% block title %}{{ title }}{% endblock %}
+	{% block add_start_script %}
+		<link type="text/css" href="{{STATIC_URL}}css/tables.css" rel="stylesheet" type="text/css" />
+	{% endblock %}
+	{% block master_content_center %}
+	<!-- empty line  -->
+		<div style="width:550px;border-bottom:1px solid #cccccc;height:15px;margin-bottom:4px;"></div>
+   <!--  =============================== -->
+   <!-- ====== ###### TITLE ######## === -->
+    <!--  =============================== -->
+		<div style="width:550px;border-bottom:1px solid #cccccc;height:45px;margin-bottom:4px;">
+				<div style="font-size: 35px;">
+                            LISTING ALL MENU ITEM's
+                </div>
+		</div>
+		<!-- empty line  -->
+		<div style="width:550px;border-bottom:1px solid #cccccc;height:30px;margin-bottom:4px;"></div>
+		
+	<!--  =============================== -->
+   <!-- ====== ###### MESSAGE LIST ######## === -->
+    <!--  =============================== -->
+		{% if msglist|length > 0 %}
+			{% for msg in msglist %}
+				<div style="width:550px;border-bottom:1px solid #cccccc;height:30px;margin-bottom:4px;">
+					<div style="color:red;">
+						{{ msg }}
+					</div>
+                </div>
+			{% endfor %}
+		{% endif %}
+		
+		<!-- empty line  -->
+		<div style="width:550px;border-bottom:1px solid #cccccc;height:30px;margin-bottom:4px;"></div>
+	
+	<!--  =============================== -->
+   <!-- ====== ###### PANEL ######## === -->
+    <!--  =============================== -->
+	
+   <!--  =============================== -->
+   <!-- ====== ###### TABLE CONTENT ######## === -->
+    <!--  =============================== -->
+							
+			<div>
+				<table id="hor-minimalist-a" class="tableclass" summary="Employee Pay Sheet">
+				    <thead>
+				    	<tr>
+				        	<th scope="col" style="width:25px;">Sr.</th>
+				            <th scope="col" style="width:50px;">Name</th>
+				            <th scope="col" style="width:150px;">Url</th>
+				            <th scope="col" style="width:150px;">Desc</th>
+				            <th scope="col" style="width:25px;">Pid</th>
+				            <th scope="col" style="width:25px;">SCI</th>
+				            <th scope="col" style="width:60px;">Icon</th>
+				        </tr>
+		    		</thead>
+		    	    <tbody>
+					{% if groupmenulist|length %}
+						{% for menu in groupmenulist %}
+							<tr>
+								<td>{{ forloop.counter }}</td>
+						        <td>{{ menu.MenuName }}</td>
+						        <td>{{ menu.MenuUrl }}</td>
+						        <td>{{ menu.MenuDesc }}</td>
+						        <td>{{ menu.MenuPid }}</td>
+						        <td>{{ menu.SCI.id }}</td>
+						        <td>lolwa</td>
+						    </tr>
+						{% endfor %}
+					{% else %}
+						<h1> there are no items </h1>
+					{% endif %}
+					
+				    </tbody>
+				</table>
+		</div>
+	{% endblock %}   
+

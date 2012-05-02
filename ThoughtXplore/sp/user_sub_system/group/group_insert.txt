@@ -1,0 +1,65 @@
+CREATE OR REPLACE FUNCTION txUser_group_insert(
+group_name VARCHAR,
+group_desc VARCHAR,
+type INTEGER,
+entity VARCHAR,
+request_state VARCHAR,
+by_user INTEGER,
+ip VARCHAR,
+OUT result INTEGER,
+OUT rescode INTEGER
+) RETURNS RECORD AS $$
+DECLARE 
+    temp INTEGER;
+    gid INTEGER;
+    varrec RECORD;
+    x INTEGER;
+    num_menu INTEGER;
+BEGIN 
+temp := 0;
+x := 0;
+
+IF EXISTS ( SELECT id FROM "txUser_group" WHERE "GroupName"=group_name) THEN
+    SELECT "SCI_id" INTO rescode  FROM "txUser_group" WHERE "GroupName"=group_name;
+	result := 2;
+  	rescode := 2201;
+	RETURN;
+END IF;
+
+SELECT * INTO varrec FROM CheckUserForPermission(by_user,'txUser','group',request_state);
+IF varrec.status <> 500 THEN
+	rescode :=  varrec.status;
+	result := -2;
+	RETURN;
+END IF;
+
+
+
+INSERT INTO "txUser_group"("GroupName","GroupDescription","GroupType_id","SCI_id","GroupEntity_id") 
+		VALUES(group_name,group_desc,type,varrec.varsci,(SELECT id FROM "txMisc_entity" WHERE "EntityName"=entity));
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 2202;
+	result := -1;
+        RETURN;
+END IF;
+
+
+ SELECT id INTO gid FROM "txUser_group" WHERE "GroupName"=group_name;
+
+
+INSERT INTO "txUser_userlogs"("LogsUser_id","LogsPCI_id","LogsObject","LogsTimeStamp","LogsIP","LogsDescription","LogsPreviousState") 
+			VALUES(varrec.userid,varrec.varpci,gid,now(),ip,'NULL','NULL');
+GET DIAGNOSTICS temp := ROW_COUNT;
+--RAISE NOTICE 'INSERT USER LOGS, ROW COUNT IS %',temp;
+IF temp <> 1 THEN 
+	rescode := 999;
+	result := -1;
+        RETURN;
+ELSE
+	rescode := gid;
+	result := 1;
+END IF;
+RETURN;
+END;
+$$ LANGUAGE plpgsql;

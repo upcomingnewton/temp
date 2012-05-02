@@ -1,0 +1,61 @@
+{% extends "master1.html" %}
+{% block title %}{{ title }}{% endblock%}
+{% block master_content_center %}
+
+	<!-- empty line  -->
+		<div class="w648 h30 mb4"></div>
+   <!--  =============================== -->
+   <!-- ====== ###### TITLE ######## === -->
+    <!--  =============================== -->
+		<div class="w648 border_bottom h45 mb4 center">
+				<div style="font-size: 35px;">
+                        Create Group Page
+                </div>
+		</div>
+		<!-- empty line  -->
+		<div class="w648 border_bottom h30 mb4"></div>
+		
+	<!--  =============================== -->
+   <!-- ====== ###### MESSAGE LIST ######## === -->
+    <!--  =============================== -->
+		{% if msglist|length > 0 %}
+			{% for msg in msglist %}
+				<div class="w648 border_bottom h30 mb4 font_color_red">
+						{{ msg }}
+                </div>
+			{% endfor %}
+		{% endif %}
+		
+	<!--  =============================== -->
+   <!-- ====== ###### CONTENT ######## === -->
+    <!--  =============================== -->
+    <form  action="/user/group/create/new/" method="post">
+		{% csrf_token %}
+		<!-- empty line  -->
+		<div class="w648 border_bottom h30 mb4"></div>
+			  <div class="w648 border_bottom h30 mb4">
+                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
+                           GROUP NAME
+                     </div>
+                     <div class="w300 hinherit float_left">
+                             <input id="Group_Name" name="Group_Name"  type="text" class="tb1" onfocus="on_focus(this.id)" onblur="on_blur(this.id)" />
+                     </div>
+                     <div class="w170 hinherit float_left"></div>
+                </div>
+     	<!--  DESC  -->
+               <div class="w648 border_bottom h30 mb4">
+                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
+                           GROUP DESC
+                     </div>
+                     <div class="w300 hinherit float_left">
+                             <input name="Group_Desc" id="Group_Desc" type="text" type="password" class="tb1" onfocus="on_focus(this.id)" onblur="on_blur(this.id)" />
+                     </div>
+                     <div class="w170 hinherit float_left"></div>
+                </div>
+      	<!--  submit -->
+      			<div class="w648 border_bottom h30 mb4 center" >
+                     <input type="submit" value="CREATE GROUP" class="center"/>
+                </div>
+		</form>
+{% endblock %}
+

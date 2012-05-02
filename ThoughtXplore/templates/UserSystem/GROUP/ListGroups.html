@@ -1,0 +1,73 @@
+{% extends "master2.html" %}
+{% block title %}{{ title }}{% endblock%}
+{% block master_content_center %}
+
+	<!-- empty line  -->
+		<div class="w648 h30 mb4"></div>
+   <!--  =============================== -->
+   <!-- ====== ###### TITLE ######## === -->
+    <!--  =============================== -->
+		<div class="w648 border_bottom h45 mb4 center">
+				<div style="font-size: 35px;">
+                        Create Group Page
+                </div>
+		</div>
+		<!-- empty line  -->
+		<div class="w648 border_bottom h30 mb4"></div>
+		
+	<!--  =============================== -->
+   <!-- ====== ###### MESSAGE LIST ######## === -->
+    <!--  =============================== -->
+		{% if msglist|length > 0 %}
+			{% for msg in msglist %}
+				<div class="w648 border_bottom h30 mb4 font_color_red">
+						{{ msg }}
+                </div>
+			{% endfor %}
+		{% endif %}
+		
+	<!--  =============================== -->
+   <!-- ====== ###### CONTENT ######## === -->
+    <!--  =============================== -->
+    	<div class="w648 border_bottom h30 mb4"></div>
+    	<div>
+				<table id="hor-minimalist-a" class="tableclass" summary="Employee Pay Sheet">
+				    <thead>
+				    	<tr>
+				        	<th scope="col" style="width:25px;">Sr.</th>
+				            <th scope="col" style="width:80px;">Name</th>
+				            <th scope="col" style="width:150px;">Desc</th>
+				            <th scope="col" style="width:80px;">Type</th>
+				            <th scope="col" style="width:25px;">SCI</th>
+				            <th scope="col" style="width:80px;">Entity</th>
+				            <th scope="col" style="width:60px;">Users</th>
+				            <th scope="col" style="width:60px;">Menu</th>
+				            <th scope="col" style="width:60px;">Edit</th>
+				            <th scope="col" style="width:60px;">Delete</th>
+				        </tr>
+		    		</thead>
+		    	    <tbody>
+					{% if grouplist|length %}
+						{% for group in grouplist %}
+							<tr>
+								<td>{{ forloop.counter }}</td>
+						        <td>{{ group.GroupName }}</td>
+						        <td>{{ group.GroupDescription }}</td>
+						        <td>{{ group.GroupType.GroupTypeName }}</td>
+						        <td>{{ group.SCI.id }}</td>
+						        <td>{{ group.GroupEntity.EntityName }}</td>
+						        <td><a href="#"><input type="button" value="Users" /></a></td>
+						        <td><a href="/user/group/{{group.id}}/menu/list/"><input type="button" value="Menu" /></a></td>
+						        <td><a href="#"><input type="button" value="Edit" /></a></td>
+						        <td><a href="#"><input type="button" value="Delete" /></a></td>
+						    </tr>
+						{% endfor %}
+					{% else %}
+						<h1> there are no items </h1>
+					{% endif %}
+					
+				    </tbody>
+				</table>
+		</div>
+{% endblock %}
+

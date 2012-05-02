@@ -1,0 +1,33 @@
+{% extends "master1.html" %}
+
+{% block title %}{{ title }}{% endblock%}
+{% load cache %}
+{% cache 3600 userid %}
+{% block master_content_center %}
+
+	<!-- empty line  -->
+		<div class="w648 h30 mb4"></div>
+   <!--  =============================== -->
+   <!-- ====== ###### TITLE ######## === -->
+    <!--  =============================== -->
+		<div class="w648 border_bottom h45 mb4 center">
+				<div style="font-size: 35px;">
+                           {{ now_time }}
+                           <br />
+                           {{ userid }}
+                </div>
+		</div>
+		<!-- empty line  -->
+		<div class="w648 border_bottom h30 mb4"></div>
+		
+	<!--  =============================== -->
+   <!-- ====== ###### MESSAGE LIST ######## === -->
+    <!--  =============================== -->
+
+	<!--  =============================== -->
+   <!-- ====== ###### CONTENT ######## === -->
+    <!--  =============================== -->
+		<!-- empty line  -->
+		<div class="w648 border_bottom h30 mb4"></div>
+{% endblock %}
+{%  endcache %}

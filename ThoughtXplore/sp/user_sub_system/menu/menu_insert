@@ -1,0 +1,57 @@
+CREATE OR REPLACE FUNCTION txMenu_menu_insert(
+mname VARCHAR,
+mdesc VARCHAR,
+murl VARCHAR,
+mpid INTEGER,
+micon VARCHAR,
+by_user INTEGER,
+ip VARCHAR,
+OUT result INTEGER,
+OUT rescode INTEGER
+) RETURNS RECORD AS $$
+DECLARE 
+    temp INTEGER;
+    menuid INTEGER;
+    varrec RECORD;
+BEGIN 
+temp := 0;
+
+
+
+IF EXISTS ( SELECT id FROM "txMenu_menu" WHERE "MenuUrl"=murl AND "MenuPid"=mpid ) THEN
+	result := 2;
+	rescode := 2401;
+	RETURN;
+END IF;
+
+SELECT * INTO varrec FROM CheckUserForPermission(by_user,'txMenu','menu','INSERT');
+IF varrec.status <> 500 THEN
+	result := -2;
+	rescode := varrec.status;
+	RETURN;
+END IF;
+
+INSERT INTO "txMenu_menu" ("MenuName","MenuUrl","MenuDesc","MenuPid","MenuIcon","SCI_id") 
+					VALUES (mname,murl,mdesc,mpid,micon,varrec.varsci);
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	result := -1;
+	rescode := 2402;
+        RETURN;
+END IF;
+SELECT id INTO menuid FROM "txMenu_menu" WHERE "MenuUrl"=murl AND "MenuPid"=mpid;
+
+INSERT INTO "txUser_userlogs"("LogsUser_id","LogsPCI_id","LogsObject","LogsTimeStamp","LogsIP","LogsDescription","LogsPreviousState") 
+						VALUES(varrec.userid,varrec.varpci,menuid,now(),ip,'NULL','NULL');
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	result := -1;
+	rescode := 999;
+        RETURN;
+ELSE
+	result := 1;
+	rescode := menuid;
+END IF;
+RETURN;
+END;
+$$ LANGUAGE plpgsql;

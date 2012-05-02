@@ -1,0 +1,88 @@
+CREATE OR REPLACE FUNCTION txUser_user_statechange_single(
+userid INTEGER,
+by_user INTEGER,
+request_group VARCHAR,
+request_permission VARCHAR,
+ip VARCHAR,
+logsdesc VARCHAR,
+OUT result INTEGER,
+OUT rescode INTEGER
+) RETURNS RECORD AS $$
+DECLARE 
+    varrec1 RECORD;
+    varrec2 RECORD;
+    varrec3 RECORD;
+    temp INTEGER;
+    groupid INTEGER;
+    log_entry VARCHAR;
+BEGIN 
+temp := 0;
+
+SELECT * INTO varrec1 FROM CheckUserForPermission(by_user,'txUser','user',request_permission);
+IF varrec1.status <> 500 THEN
+	rescode :=  varrec1.status;
+	result := -2;
+	RETURN;
+END IF;
+
+SELECT * INTO varrec2 FROM CheckUserForPermission(by_user,'txUser','usergroup','DELETE');
+IF varrec2.status <> 500 THEN
+	rescode :=  varrec2.status;
+	result := -3;
+	RETURN;
+END IF;
+
+SELECT * INTO varrec3 FROM CheckUserForPermission(by_user,'txUser','usergroup','INSERT');
+IF varrec3.status <> 500 THEN
+	rescode :=  varrec3.status;
+	result := -4;
+	RETURN;
+END IF;
+
+SELECT id INTO groupid FROM "txUser_group" WHERE "GroupName"=request_group;
+IF request_group IS NULL THEN 
+	rescode :=  2141;
+	result := -1;
+	RETURN;
+END IF;
+
+UPDATE "txUser_user" SET "SCI_id"=varrec1.varsci WHERE id=userid;
+
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode :=  2142;
+	result := -1;
+	RETURN;
+END IF;
+
+IF EXISTS (SELECT id FROM "txUser_usergroup" WHERE "User_id"=userid AND "SCI_id"=varrec1.varsci) THEN
+	DELETE FROM "txUser_usergroup" WHERE "User_id"=userid AND "SCI_id"=varrec1.varsci;
+	GET DIAGNOSTICS temp := ROW_COUNT;
+	IF temp <> 1 THEN
+		rescode :=  2143;
+		result := -1;
+		RETURN;
+	END IF;
+END IF;
+
+INSERT INTO "txUser_usergroup"("Group_id","User_id","SCI_id") VALUES(groupid,userid,varrec1.varsci);
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN
+	rescode :=  2144;
+	result := -1;
+	RETURN;
+END IF;
+
+INSERT INTO "txUser_userlogs"("LogsUser_id","LogsPCI_id","LogsObject","LogsTimeStamp","LogsIP","LogsDescription","LogsPreviousState") 
+						VALUES(varrec1.userid,varrec1.varpci,-1,now(),ip,logsdesc,'NULL');
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode :=  999;
+	result := -1;
+ELSE
+	rescode :=  2145;
+	result := 1;
+END IF;
+RETURN;
+END;
+$$ LANGUAGE plpgsql;

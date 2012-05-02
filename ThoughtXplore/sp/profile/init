@@ -1,0 +1,47 @@
+CREATE OR REPLACE FUNCTION profile_system_initialize() RETURNS VOID AS $$
+DECLARE
+ row_index INTEGER;
+ result INTEGER;
+ grouptypeindex INTEGER;
+ groupsciindex INTEGER;
+ groupentityindex INTEGER;
+ var_entitysciindex INTEGER;
+ var_groupsci_index INTEGER;
+var_groupentity_index INTEGER;
+var_grouptype_index INTEGER;
+var_userentity_index INTEGER;
+var_usersci_index INTEGER;
+var_usergroup_group INTEGER;
+var_users RECORD;
+var_usergroup_sci INTEGER;
+var_state_active INTEGER;
+var_state_del INTEGER;
+var_per_insert INTEGER;
+var_per_del INTEGER;
+var_per_update  INTEGER;
+BEGIN 
+
+/* ======================= STATE TABLE ====================================  */
+
+SELECT id INTO var_state_active FROM "txMisc_miscstate" WHERE "StateName"='ACTIVE';  
+SELECT id INTO var_state_del FROM "txMisc_miscstate" WHERE "StateName"='DELETED'; 
+
+/* =========================== PERMISSION TABLE ===============================  */ 
+
+SELECT id INTO var_per_insert FROM "txMisc_miscpermission" WHERE "PermissionName"='INSERT';  
+SELECT id INTO var_per_del FROM "txMisc_miscpermission" WHERE "PermissionName"='DELETE'; 
+SELECT id INTO var_per_update FROM "txMisc_miscpermission" WHERE "PermissionName"='UPDATE'; 
+
+/* ============================= CREATING STATES AND PERMISSIONS FOR USER CONTACT ==============================  */ 
+DELETE FROM "UserContact_usercontact";
+SELECT id INTO row_index FROM django_content_type WHERE app_label='UserContact' AND model='usercontact';
+INSERT INTO "txMisc_statecontenttype"("State_id","StateContentType_id","StateActive") VALUES(var_state_active,row_index,1);
+INSERT INTO "txMisc_statecontenttype"("State_id","StateContentType_id","StateActive") VALUES(var_state_del,row_index,1);
+INSERT INTO "txMisc_permissioncontenttype"("Permission_id","PermissionContentType_id","PermissionActive") VALUES(var_per_insert,row_index,1);
+INSERT INTO "txMisc_permissioncontenttype"("Permission_id","PermissionContentType_id","PermissionActive") VALUES(var_per_update,row_index,1);
+INSERT INTO "txMisc_permissioncontenttype"("Permission_id","PermissionContentType_id","PermissionActive") VALUES(var_per_del,row_index,1);
+
+
+
+END;
+$$ LANGUAGE plpgsql;

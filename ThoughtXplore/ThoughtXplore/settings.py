@@ -134,7 +134,8 @@ INSTALLED_APPS = (
     'txMiscLogs',
     'txUser',
     'txCommunications',
-    'txMenu'
+    'txMenu',
+    'UserContact',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

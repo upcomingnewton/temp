@@ -1,0 +1,63 @@
+CREATE OR REPLACE FUNCTION contactinfo_insert(
+    uid INTEGER,
+    req_per VARCHAR,
+    Mobileno VARCHAR,
+    Phoneno VARCHAR,
+    AltEmailAdress VARCHAR,
+    FatherName VARCHAR,
+    FatherContactNo VARCHAR,
+    MotherName VARCHAR,
+    MotherContactNo VARCHAR,
+    AlternateAdress VARCHAR,
+    Adress VARCHAR,
+    by_user INTEGER,
+    ip VARCHAR,
+	OUT result INTEGER,
+	OUT rescode INTEGER
+) RETURNS RECORD AS $$
+DECLARE 
+    temp INTEGER;
+    varrec RECORD;
+BEGIN 
+temp := 0;
+
+IF EXISTS ( SELECT id FROM "UserContact_usercontact" WHERE "User_id"=uid) THEN
+    SELECT id INTO rescode  FROM "UserContact_usercontact" WHERE "User_id"=uid;
+	result := 2;
+    RETURN;
+END IF;
+
+SELECT * INTO varrec FROM CheckUserForPermission(by_user,'UserContact','usercontact',req_per);
+IF varrec.status <> 500 THEN
+	result := -2;
+	rescode := varrec.status;
+    RETURN;
+END IF;
+
+
+INSERT INTO "UserContact_usercontact"(
+             "User_id", "SCI_id", "Mobileno", "Phoneno", "AltEmailAdress", "FatherName", "FatherContactNo", "MotherName", "MotherContactNo", "AlternateAdress", "Adress")
+    VALUES   (uid, varrec.varsci,Mobileno , Phoneno, AltEmailAdress, FatherName, FatherContactNo, MotherName, MotherContactNo, AlternateAdress, Adress);
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	result := -1;
+	rescode := 2151;
+    RETURN;
+END IF;
+
+INSERT INTO "txUser_userlogs"("LogsUser_id","LogsPCI_id","LogsObject","LogsTimeStamp","LogsIP","LogsDescription","LogsPreviousState") 
+						VALUES(varrec.userid,varrec.varpci,varrec.userid,now(),ip,'INSERT','NULL');
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	result := -1;
+	rescode := 999;
+    RETURN;
+ELSE
+	result := 1;
+	rescode := 2155;
+    RETURN;
+END IF;
+RETURN;
+END;
+$$ LANGUAGE plpgsql;
+    

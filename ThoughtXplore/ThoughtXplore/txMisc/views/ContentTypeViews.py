@@ -1,6 +1,15 @@
-from django.http import HttpResponse
-from django.template import RequestContext , loader
+from django.http import HttpResponseRedirect
+from django.template import RequestContext 
 from django.shortcuts import render_to_response
+
+# list all content types, only list with no edit options
+def ListContentTypes(HttpRequest):
+    pass
+
+
+# list all content types along with edit options
+def EditContentTypes(HttpRequest):
+    pass
 
 
 def ErrorHandler(HttpRequest):

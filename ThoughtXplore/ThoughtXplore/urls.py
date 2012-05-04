@@ -26,3 +26,8 @@ urlpatterns = patterns('',
      url(r'^error/$','txMisc.views.ErrorHandler'),
      url(r'^message/$','txMisc.views.ErrorHandler')
 )
+
+urlpatterns += patterns('',
+                        
+                url(r'^admin/security/',include('txMisc.urls')),
+                )

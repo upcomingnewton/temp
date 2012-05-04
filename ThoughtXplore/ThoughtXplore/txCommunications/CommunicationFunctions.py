@@ -5,14 +5,14 @@ from ThoughtXplore.txUser.models import User, UserGroup, Group
 from ThoughtXplore.txCommunications.models import Communication_Templates, Communication_Type,Communication_Groups
 from cPickle import dumps, loads
 import string
-from ThoughtXplore.txMisc.enc_dec import Encrypt
+from ThoughtXplore.txMisc.Encryption.enc_dec import Encrypt
 from django.core import mail
 #from mailer import send_mail
-from ThoughtXplore.txMisc.Email import sendMail
+from ThoughtXplore.txMisc.Misc.Email import sendMail
 from ThoughtXplore.txCommunications.DatabaseFunctions import DBInsertComm, DBInsertCommTemplate
 from datetime import datetime
 from django.http import HttpRequest,HttpResponse
-from ThoughtXplore.txMisc.MiscFunctions import split
+from ThoughtXplore.txMisc.Misc.MiscFunctions import split
 from ThoughtXplore import CONFIG
 from ThoughtXplore.txUser.BusinessFunctions.UserFunctions import UserFnx
 import time
@@ -183,6 +183,9 @@ def addtemplate(HttpRequest):
     return HttpResponse("Done")
 
 
+
+def send_mails(param):
+    return 1
 #def send_mails(param):
 #    
 #    email_code_name=param['comm_code_name']

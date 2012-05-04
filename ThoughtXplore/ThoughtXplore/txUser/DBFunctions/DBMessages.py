@@ -1,4 +1,4 @@
-from ThoughtXplore.txMisc.DBMessages import db_messages
+from ThoughtXplore.txMisc.DBFunctions.DBMessages import db_messages
 
 
 def decode(result,rescode):

@@ -4,16 +4,15 @@ from django.shortcuts import render_to_response, redirect
 from ThoughtXplore.txUser.models import User, Group
 from ThoughtXplore.txUser.BusinessFunctions.UserFunctions import UserFnx
 import datetime
-from ThoughtXplore.txMisc.Validation import EmailValidate , StringValidate
-from ThoughtXplore.txMisc.enc_dec import Encrypt
+from ThoughtXplore.txMisc.Validation.Validation import EmailValidate , StringValidate
+from ThoughtXplore.txMisc.Encryption.enc_dec import Encrypt
 from django.core.urlresolvers import reverse
 from ThoughtXplore.txCommunications.CommunicationFunctions import send_validation_email
-from ThoughtXplore.txMisc import enc_dec
 from ThoughtXplore.txMenu.BusinessFunctions.MenuFunctions import MenuFnx
 from ThoughtXplore.txUser.BusinessFunctions.GroupFunctions import GroupFnx
 from ThoughtXplore.CONFIG import LOGGER_USER, SESSION_MESSAGE
 import logging
-from ThoughtXplore.txMisc.LoggerFunctions import AppendMessageList
+from ThoughtXplore.txMisc.Logging.LoggerFunctions import AppendMessageList
 LoggerUser = logging.getLogger(LOGGER_USER)
 
 def ListGroups(HttpRequest, req_type):

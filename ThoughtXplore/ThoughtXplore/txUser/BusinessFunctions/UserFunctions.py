@@ -1,13 +1,13 @@
 from django.db import models
 from ThoughtXplore.txUser.models import User,Group,SecGroup_Comm
-from ThoughtXplore.txMisc.enc_dec import Encrypt
+from ThoughtXplore.txMisc.Encryption.enc_dec import Encrypt
 from ThoughtXplore.txUser.DBFunctions.DatabaseFunctions import *
 from ThoughtXplore.txUser.DBFunctions.DBMessages import db_messages,decode
 from ThoughtXplore.txMenu.BusinessFunctions.LoginMenuFunctions import MakeGroupMenu
 from cPickle import dumps, loads
 from ThoughtXplore.CONFIG import LOGGER_USER
 import logging
-from ThoughtXplore.txMisc.Email import sendMail
+from ThoughtXplore.txMisc.Misc.Email import sendMail
 
 
 

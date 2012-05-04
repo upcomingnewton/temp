@@ -4,7 +4,6 @@ from ThoughtXplore.txMenu.models import Menu , GroupMenu
 from ThoughtXplore.txMenu.BusinessFunctions.MenuFunctions import MenuFnx 
 from ThoughtXplore.txMenu.DBFunctions.DatabaseFunctions import DBAddMenuToGroup
 from ThoughtXplore.txMenu.DBFunctions.DBMessages import decode
-from ThoughtXplore.txLogging import MenuLogger
 from ThoughtXplore.CONFIG import LOGGER_USER
 import logging
 

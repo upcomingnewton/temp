@@ -9,12 +9,9 @@ from django.core.urlresolvers import reverse
 from ThoughtXplore.txUser.models import User
 from ThoughtXplore.txUser.BusinessFunctions import UserFunctions
 #from ThoughtXplore.txUser.views.Views_MiscFnx import CheckAndlogout
-from ThoughtXplore.txMisc.Validation import EmailValidate , StringValidate
-from ThoughtXplore.txMisc.enc_dec import Encrypt
+from ThoughtXplore.txMisc.Validation.Validation import EmailValidate , StringValidate
+from ThoughtXplore.txMisc.Encryption.enc_dec import Encrypt
 from ThoughtXplore.txCommunications.CommunicationFunctions import send_validation_email
-from ThoughtXplore.txMisc import enc_dec
-from ThoughtXplore.txLogging.UserLog import UserDebugLog
-from ThoughtXplore.txLogging import ExceptionLog
 from ThoughtXplore.CONFIG import LOGGER_USER, SESSION_MESSAGE
 import logging
 from django.views.decorators.cache import never_cache
@@ -247,5 +244,5 @@ def view_dashboard(HttpRequest):
         else:
             return HttpResponseRedirect('/user/login/')
     except:
-        ExceptionLog.UserExceptionLog(HttpRequest.META['REMOTE_ADDR'], 'view_dashboard')
+        #ExceptionLog.UserExceptionLog(HttpRequest.META['REMOTE_ADDR'], 'view_dashboard')
         return render_to_response('txUser/ErrorPage.html',{},context_instance=RequestContext(HttpRequest))

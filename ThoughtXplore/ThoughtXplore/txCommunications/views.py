@@ -1,4 +1,4 @@
-from ThoughtXplore.txMisc.MiscFunctions import split
+from ThoughtXplore.txMisc.Misc.MiscFunctions import split
 from ThoughtXplore.txCommunications.CommunicationFunctions import send_mails, send_notice
 from django.http import HttpRequest,HttpResponse
 from ThoughtXplore.txUser.models import User
@@ -9,11 +9,11 @@ from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext , loader
 from ThoughtXplore.txCommunications.CommunicationFunctions import send_mails
 from django.contrib import sessions
-from ThoughtXplore.txMisc.enc_dec import Encrypt
+from ThoughtXplore.txMisc.Encryption.enc_dec import Encrypt
 import time
 from time import mktime
 from datetime import datetime
-from ThoughtXplore.txMisc.MiscFunctions import decode_month 
+from ThoughtXplore.txMisc.Misc.MiscFunctions import decode_month 
 from ThoughtXplore.txCommunications.DatabaseFunctions import DBInsertCommTemplate
 def iframeNotice(request,ref):
     

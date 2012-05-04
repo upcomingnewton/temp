@@ -3,12 +3,12 @@ from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.template import RequestContext , loader
 from django.shortcuts import render_to_response, redirect
 import datetime
-from ThoughtXplore.txMisc.Validation import EmailValidate , StringValidate
-from ThoughtXplore.txMisc.enc_dec import Encrypt
+from ThoughtXplore.txMisc.Validation.Validation import EmailValidate , StringValidate
+from ThoughtXplore.txMisc.Encryption.enc_dec import Encrypt
 from ThoughtXplore.txMenu.BusinessFunctions.MenuFunctions import  MenuFnx
 from ThoughtXplore.CONFIG import LOGGER_USER, SESSION_MESSAGE
 import logging
-from ThoughtXplore.txMisc.LoggerFunctions import AppendMessageList
+from ThoughtXplore.txMisc.Logging.LoggerFunctions import AppendMessageList
 LoggerUser = logging.getLogger(LOGGER_USER)
 
 

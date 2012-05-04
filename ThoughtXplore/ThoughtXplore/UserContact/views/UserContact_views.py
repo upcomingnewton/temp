@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from ThoughtXplore.UserContact.BusinessFunctions.UserContactFunctions import UserContactFnx
 from ThoughtXplore.CONFIG import LOGGER_USER, SESSION_MESSAGE
-from ThoughtXplore.txMisc.LoggerFunctions import AppendMessageList
+from ThoughtXplore.txMisc.Logging.LoggerFunctions import AppendMessageList
 import logging
 
 LoggerUser = logging.getLogger(LOGGER_USER)

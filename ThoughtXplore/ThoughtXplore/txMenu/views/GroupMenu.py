@@ -1,12 +1,11 @@
 from ThoughtXplore.txMenu.BusinessFunctions.GroupMenuFunctions import GroupMenuFunctions 
 from ThoughtXplore.txMenu.BusinessFunctions.MenuFunctions import MenuFnx 
-from ThoughtXplore.txMisc.SessionFunctions import CheckAndMakeMessageSession
 import traceback
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse,HttpResponseRedirect
 from ThoughtXplore.CONFIG import LOGGER_USER, SESSION_MESSAGE
-from ThoughtXplore.txMisc.LoggerFunctions import AppendMessageList
+from ThoughtXplore.txMisc.Logging.LoggerFunctions import AppendMessageList
 import logging
 
 LoggerUser = logging.getLogger(LOGGER_USER)

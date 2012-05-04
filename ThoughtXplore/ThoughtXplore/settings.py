@@ -163,6 +163,11 @@ LOGGING = LOG_SETTINGS = {
                                     'handlers':['file_user','smtp'],
                                     'level':'DEBUG',
                                     },
+               
+                'LOGGER_MiscSystem':{
+                                    'handlers':['file_misc','smtp'],
+                                    'level':'DEBUG',
+                                    },
                },
     'handlers': {
         'file_user': {
@@ -170,6 +175,14 @@ LOGGING = LOG_SETTINGS = {
             'level': 'DEBUG',
             'formatter': 'detailed',
             'filename': '/home/nitin/logs/tx_user_system',
+            'maxBytes': 10485760,
+            'backupCount': 5,
+        },
+        'file_misc': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'filename': '/home/nitin/logs/tx_misc_system',
             'maxBytes': 10485760,
             'backupCount': 5,
         },

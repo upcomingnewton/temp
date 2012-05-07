@@ -45,11 +45,11 @@
 	                     <div class="w170 hinherit float_left"></div>
 	                </div>
 	     	<!--  desc  -->
-	               <div class="w648 border_bottom h75 mb4">
+	               <div class="w648 border_bottom h100 mb4">
 	                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
 	                           State Desc
 	                     </div>
-	                     <div class="w300 h75 float_left">
+	                     <div class="w300 h100 float_left">
 	                             <textarea id="EditState_Create_Desc" name="EditState_Create_Desc"  class="tb1 h75" onfocus="on_focus(this.id)" onblur="on_blur(this.id)" ></textarea>
 	                     </div>
 	                     <div class="w170 h30 float_left"></div>
@@ -77,7 +77,7 @@
 	                     <div class="w170 hinherit float_left"></div>
 	                </div>
 	     	<!--  desc  -->
-	               <div class="w648 border_bottom h75 mb4">
+	               <div class="w648 border_bottom h100 mb4">
 	                     <div class="w150 float_left h30 pl10 pr10 txt_align_right">
 	                           State Desc
 	                     </div>
@@ -103,7 +103,9 @@
 				        	<th scope="col" style="width:25px;">Sr.</th>
 				            <th scope="col" style="width:180px;">Name</th>
 				            <th scope="col" style="width:250px;">Desc</th>
+				            {% if can_edit == "true" %}
 				            <th scope="col" style="width:60px;">Edit</th>
+				            {% endif %}
 				        </tr>
 		    		</thead>
 		    	    <tbody>
@@ -113,7 +115,9 @@
 								<td>{{ forloop.counter }}</td>
 						        <td>{{ state.StateName }}</td>
 						        <td>{{ state.StateDescription }}</td>
+						        {% if can_edit == "true" %}
 						        <td><a href="#"><input type="button" value="Edit" /></a></td>
+						         {% endif %}
 						    </tr>
 						{% endfor %}
 					{% else %}

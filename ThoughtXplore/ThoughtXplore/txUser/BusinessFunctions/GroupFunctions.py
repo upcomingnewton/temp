@@ -1,6 +1,6 @@
 from django.db import models
 from ThoughtXplore.txUser.models import User,Group,SecGroup_Comm
-from ThoughtXplore.txMisc.enc_dec import Encrypt
+from ThoughtXplore.txMisc.Encryption.enc_dec import Encrypt
 from ThoughtXplore.txUser.DBFunctions.DBMessages import decode
 from ThoughtXplore.txUser.DBFunctions.DatabaseFunctions import DBCreateGroup,DBCreateSecGroupForCommunications
 from ThoughtXplore.CONFIG import LOGGER_USER

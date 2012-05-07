@@ -19,7 +19,7 @@ def  ListStates(HttpRequest):
             if len(statelist) == 0:
                 msglist.append('There are no states defined yet')
             HttpRequest.session[SESSION_MESSAGE] = msglist
-            return render_to_response('security/states/EditStates.html',{'statelist':statelist,'can_edit':'true','visible_list':'true','visible_edit':'false','visible_create':'false',},context_instance=RequestContext(HttpRequest))
+            return render_to_response('security/states/EditStates.html',{'statelist':statelist,'visible_list':'true','visible_create':'false',},context_instance=RequestContext(HttpRequest))
         else:
             LoggerMisc.error('[%s] ip = %s'%('ListStates',ip))
             msglist.append('[ERROR][ListStates] %s'%(statelist[1]))
@@ -30,8 +30,56 @@ def  ListStates(HttpRequest):
         msglist.append('Some error has occoured while processing your request')
         HttpRequest.session[SESSION_MESSAGE] = msglist
         return HttpResponseRedirect('/message/')
-#CreateStateIndex
-#CreateState
-#EditStateIndex,stateid
-#EditState,stateid
+    
+    
+def CreateStateIndex(HttpRequest):
+    ip = HttpRequest.META['REMOTE_ADDR']
+    msglist = AppendMessageList(HttpRequest)
+    try:
+        return render_to_response('security/states/EditStates.html',{'visible_list':'false','visible_create':'true',},context_instance=RequestContext(HttpRequest))
+    except:
+        LoggerMisc.exception('[%s] EXCEPTION ip = %s'%('CreateStateIndex',ip))
+        msglist.append('Some error has occoured while processing your request')
+        HttpRequest.session[SESSION_MESSAGE] = msglist
+        return HttpResponseRedirect('/message/')
+
+def CreateState(HttpRequest):
+    ip = HttpRequest.META['REMOTE_ADDR']
+    msglist = AppendMessageList(HttpRequest)
+    try:
+        name = ''
+        desc = ''
+        if 'EditState_Create_Name' in HttpRequest.POST:
+            name = HttpRequest.POST['EditState_Create_Name']
+            if len(name) < 4:
+                msglist.append('Proper Name required')
+        else:
+            msglist.append('Name required')
+        if 'EditState_Create_Desc' in HttpRequest.POST:
+            desc = HttpRequest.POST['EditState_Create_Desc']
+            if len(desc) < 4:
+                msglist.append('Proper Desc required')
+        else:
+            msglist.append('Desc required')
+        if len(msglist) > 0:
+            msglist.append('PLEASE CORRECT THESE ERRORS')
+            HttpRequest.session[SESSION_MESSAGE] = msglist
+            return HttpResponseRedirect('/admin/security/states/create/')
+        else:
+            StatesClassObj = StatesClass()
+            res = StatesClassObj.CreateState(name, desc, 1, ip)
+            msglist.append('result code : %s , message %s'%(res[0],res[1]))
+            HttpRequest.session[SESSION_MESSAGE] = msglist
+            return HttpResponseRedirect('/user/group/create/')
+    except KeyError as msg:
+        LoggerMisc.exception('[CreateGroup][%s]exception message'%(ip))
+        msglist.append(str(msg))
+        HttpRequest.session[SESSION_MESSAGE] = msglist
+        return HttpResponseRedirect('/admin/security/states/create/')
+    except:
+        LoggerMisc.exception('[CreateGroup][%s]exception message'%(ip))
+        msglist.append('exception happened in create group function')
+        HttpRequest.session[SESSION_MESSAGE] = msglist
+        return HttpResponseRedirect('/message/')
+
 

@@ -1,10 +1,32 @@
 from ThoughtXplore.txMisc.models import  MiscState ,StateContentType
 from ThoughtXplore.CONFIG import LOGGER_MISC
+from ThoughtXplore.txMisc.DBFunctions.DatabaseFunctions import DBInsertState
+from ThoughtXplore.txMisc.DBFunctions.DBMessages import decode
 import logging
 
 class StatesClass():
     def __init__(self):
         self.MiscLogger = logging.getLogger(LOGGER_MISC)
+
+     #CRUD FUNCTIONS
+        
+    def CreateState(self,name,desc,by,ip):
+            try:
+                self.MiscLogger.debug('inside CreateState')
+                details = {
+                           'ip':ip,
+                           'by':by,
+                           'name':name,
+                           'desc':desc,
+                           }
+                result = DBInsertState(details)
+                self.MiscLogger.debug('[%s] %s,%s'%('CreateState',str(details),str(result)))
+                return (result,decode(int(result['result']), result['rescode']))
+            except:
+                exception_log = ('[%s] %s,%s,%s,%s')%('CreateState',name,desc,by,ip)
+                self.MiscLogger.exception(exception_log)
+                return (-1,'Exception Occoured at Business Functions while creating group')
+
 
     def getAllStates(self):
         try:

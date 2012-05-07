@@ -10,3 +10,13 @@ db_messages = {'-500':'Requested operation is not supported by system',
                '999':'Log Entry failed',
                '-1':'Exception @ DB level',
                }
+
+def decode(result,rescode):
+    if result == 1:
+        return 'SUCCESS'
+    elif result == 2:
+        return 'Requested object already exists'
+    else: 
+        return db_messages[str(rescode)]
+    
+db_messages.update({})

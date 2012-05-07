@@ -174,3 +174,13 @@ body
 {
     text-align:right;
 }
+
+.visible_false
+{
+	visible:false;
+}
+
+.visible_true
+{
+	visible:true;
+}

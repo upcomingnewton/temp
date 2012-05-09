@@ -36,9 +36,10 @@ def CreatePermissionIndex(HttpRequest):
     ip = HttpRequest.META['REMOTE_ADDR']
     msglist = AppendMessageList(HttpRequest)
     try:
-        return render_to_response('security/states/EditPermission.html',{'visible_list':'false','visible_create':'true',},context_instance=RequestContext(HttpRequest))
+            HttpRequest.session[SESSION_MESSAGE] = msglist
+            return render_to_response('security/states/EditPermission.html',{'visible_list':'false','visible_create':'true',},context_instance=RequestContext(HttpRequest))
     except:
-        LoggerMisc.exception('[%s] EXCEPTION ip = %s'%('CreatePermissionIndex',ip))
+        LoggerMisc.exception('[%s] EXCEPTION ip = %s'%('ListPermission',ip))
         msglist.append('Some error has occoured while processing your request')
         HttpRequest.session[SESSION_MESSAGE] = msglist
         return HttpResponseRedirect('/message/')
@@ -49,14 +50,14 @@ def CreatePermission(HttpRequest):
     try:
         name = ''
         desc = ''
-        if 'EditState_Create_Name' in HttpRequest.POST:
-            name = HttpRequest.POST['EditState_Create_Name']
+        if 'EditPermission_Create_Name' in HttpRequest.POST:
+            name = HttpRequest.POST['EditPermission_Create_Name']
             if len(name) < 4:
                 msglist.append('Proper Name required')
         else:
             msglist.append('Name required')
-        if 'EditState_Create_Desc' in HttpRequest.POST:
-            desc = HttpRequest.POST['EditState_Create_Desc']
+        if 'EditPermission_Create_Desc' in HttpRequest.POST:
+            desc = HttpRequest.POST['EditPermission_Create_Desc']
             if len(desc) < 4:
                 msglist.append('Proper Desc required')
         else:
@@ -64,10 +65,10 @@ def CreatePermission(HttpRequest):
         if len(msglist) > 0:
             msglist.append('PLEASE CORRECT THESE ERRORS')
             HttpRequest.session[SESSION_MESSAGE] = msglist
-            return HttpResponseRedirect('/admin/security/states/create/')
+            return HttpResponseRedirect('/admin/security/Permissions/create/')
         else:
-            StatesClassObj = StatesClass()
-            res = StatesClassObj.CreateState(name, desc, 1, ip)
+            PermissionsClassObj = PermissionsClass()
+            res = PermissionsClassObj.CreatePermission(name, desc, 1, ip)
             msglist.append('result code : %s , message %s'%(res[0],res[1]))
             HttpRequest.session[SESSION_MESSAGE] = msglist
             return HttpResponseRedirect('/user/group/create/')
@@ -75,7 +76,7 @@ def CreatePermission(HttpRequest):
         LoggerMisc.exception('[CreateGroup][%s]exception message'%(ip))
         msglist.append(str(msg))
         HttpRequest.session[SESSION_MESSAGE] = msglist
-        return HttpResponseRedirect('/admin/security/states/create/')
+        return HttpResponseRedirect('/admin/security/Permissions/create/')
     except:
         LoggerMisc.exception('[CreateGroup][%s]exception message'%(ip))
         msglist.append('exception happened in create group function')

@@ -10,7 +10,7 @@ urlpatterns = patterns('',
                     url(r'^states/create/$','txMisc.views.StateViews.CreateStateIndex'),
                     url(r'^states/create/new/$','txMisc.views.StateViews.CreateState'),
                     
-                    url(r'^Permissions/list/$','txMisc.views.PermissionViews.ListPermission'),
-                    url(r'^Permissions/create/$','txMisc.views.PermissionViews.CreatePermissionIndex'),
-                    url(r'Permissions/create/new//$','txMisc.views.PermissionViews.CreatePermission'),
+                     url(r'^perms/list/$','txMisc.views.PermissionViews.ListPermission'),
+                    url(r'^perms/create/$','txMisc.views.PermissionViews.CreatePermissionIndex'),
+                    url(r'^perms/create/new/$','txMisc.views.PermissionViews.CreatePermission'),
                        )

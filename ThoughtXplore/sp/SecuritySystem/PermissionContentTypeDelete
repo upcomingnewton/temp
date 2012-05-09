@@ -1,0 +1,57 @@
+CREATE OR REPLACE FUNCTION Security_PermissionContentType_Delete(
+id_to_delete INTEGER,
+by_user INTEGER,
+ip VARCHAR,
+OUT result INTEGER,
+OUT rescode INTEGER
+) RETURNS RECORD AS $$
+DECLARE 
+    temp INTEGER;
+    active INTEGER;
+    ctid INTEGER;
+BEGIN 
+temp := 0;
+
+IF NOT EXISTS ( SELECT id FROM "txMisc_permissioncontenttype" WHERE id=id_to_delete ) THEN
+	result := -1;
+  	rescode := 61;
+	RETURN;
+END IF;
+
+SELECT "PermissionActive" INTO active FROM "txMisc_permissioncontenttype" WHERE id=id_to_delete;
+IF active <> 1 THEN 
+	result := 2;
+	rescode := 62;
+	RETURN;
+END IF;
+
+UPDATE "txMisc_permissioncontenttype"
+  SET  "PermissionActive"=0
+ WHERE id=id_to_delete;
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 63;
+	result := -1;
+        RETURN;
+END IF;
+
+
+SELECT id INTO ctid FROM django_content_type WHERE app_label='txMisc' AND model ='permissioncontenttype';
+
+INSERT INTO "txMisc_securitylogs"(id, "User", "ContentType_id", "TimeStamp", ip, "Desc")
+VALUES(id_to_delete,by_user,ctid,now(),ip,'permissioncontenttype delete');
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 999;
+	result := -1;
+        RETURN;
+ELSE
+	rescode := 65;
+	result := 1;
+RETURN;
+END IF;
+
+
+RETURN;
+END;
+$$ LANGUAGE plpgsql;

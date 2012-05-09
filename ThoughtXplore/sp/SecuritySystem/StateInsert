@@ -8,12 +8,13 @@ OUT rescode INTEGER
 ) RETURNS RECORD AS $$
 DECLARE 
     temp INTEGER;
+    ctid INTEGER;
 BEGIN 
 temp := 0;
 
 IF EXISTS ( SELECT id FROM "txMisc_miscstate" WHERE "StateName"=StateName) THEN
 	result := 2;
-  	rescode := 22;
+  	rescode := 51;
 	RETURN;
 END IF;
 
@@ -22,13 +23,26 @@ INSERT INTO "txMisc_miscstate"( "StateName", "StateDescription")
 
 GET DIAGNOSTICS temp := ROW_COUNT;
 IF temp <> 1 THEN 
-	rescode := 23;
+	rescode := 52;
+	result := -1;
+        RETURN;
+END IF;
+
+SELECT id INTO rescode FROM "txMisc_miscstate" WHERE "StateName" = StateName;
+SELECT id INTO ctid FROM django_content_type WHERE app_label='txMisc' AND model ='miscstate';
+
+INSERT INTO "txMisc_securitylogs"(id, "User", "ContentType_id", "TimeStamp", ip, "Desc")
+VALUES(rescode,by_user,ctid,now(),ip,'State Insert');
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 999;
 	result := -1;
         RETURN;
 ELSE
-	SELECT id INTO rescode FROM "txMisc_miscstate" WHERE "StateName" = StateName;
 	result := 1;
-END IF;
 RETURN;
+END IF;
 END;
 $$ LANGUAGE plpgsql;
+
+

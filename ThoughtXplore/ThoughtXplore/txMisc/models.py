@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 
 
+
 # Create your models here.
 
 class MiscState(models.Model):
@@ -60,3 +61,11 @@ class Entity(models.Model):
     EntityName = models.CharField(max_length=50)
     EntityDescription = models.CharField(max_length=500)
     SCI = models.ForeignKey(StateContentType)
+    
+    
+class SecurityLogs(models.Model):
+    User = models.IntegerField()
+    ContentType = models.ForeignKey(ContentType)
+    TimeStamp = models.DateTimeField()
+    ip = models.CharField(max_length=20)
+    Desc = models.CharField(max_length=1000)

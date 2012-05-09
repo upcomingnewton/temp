@@ -1,0 +1,22 @@
+from django.conf.urls.defaults import patterns,url
+
+
+urlpatterns = patterns('',
+                    
+                    url(r'^contenttypes/$','txMisc.views.ContentTypeViews.ListContentTypes'),
+                    url(r'^contenttypes/edit/$','txMisc.views.ContentTypeViews.EditContentTypes'),
+                    
+                    url(r'^states/list/$','txMisc.views.StateViews.ListStates'),
+                    url(r'^states/create/$','txMisc.views.StateViews.CreateStateIndex'),
+                    url(r'^states/create/new/$','txMisc.views.StateViews.CreateState'),
+                    
+<<<<<<< HEAD
+                    url(r'^Permissions/list/$','txMisc.views.PermissionViews.ListPermission'),
+                    url(r'^Permissions/create/$','txMisc.views.PermissionViews.CreatePermissionIndex'),
+                    url(r'Permissions/create/new//$','txMisc.views.PermissionViews.CreatePermission'),
+=======
+                     url(r'^perms/list/$','txMisc.views.PermissionViews.ListPermission'),
+                    url(r'^perms/create/$','txMisc.views.PermissionViews.CreatePermissionIndex'),
+                    url(r'^perms/create/new/$','txMisc.views.PermissionViews.CreatePermission'),
+>>>>>>> c9b56e56febfee85daa203555db7261f75029cde
+                       )

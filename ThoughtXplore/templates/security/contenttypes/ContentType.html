@@ -1,0 +1,75 @@
+{% extends "master1.html" %}
+{% block title %}{{ title }}{% endblock%}
+{% block master_content_center %}
+
+	<!-- empty line  -->
+		<div class="w648 h30 mb4"></div>
+   <!--  =============================== -->
+   <!-- ====== ###### TITLE ######## === -->
+    <!--  =============================== -->
+		<div class="w648 border_bottom h45 mb4 center">
+				<div style="font-size: 35px;">
+                      Content Types
+                </div>
+		</div>
+		<!-- empty line  -->
+		<div class="w648 border_bottom h30 mb4"></div>
+		
+	<!--  =============================== -->
+   <!-- ====== ###### MESSAGE LIST ######## === -->
+    <!--  =============================== -->
+		{% if msglist|length > 0 %}
+			{% for msg in msglist %}
+				<div class="w648 border_bottom h30 mb4 font_color_red">
+						{{ msg }}
+                </div>
+			{% endfor %}
+		{% endif %}
+		
+	<!--  =============================== -->
+   <!-- ====== ###### CONTENT ######## === -->
+    <!--  =============================== -->
+    <!-- empty line  -->
+		<div class="w648 border_bottom h30 mb4"></div>
+    <!--  ========= list ===================== -->
+     <div  >
+				<table id="hor-minimalist-a" class="tableclass" summary="Employee Pay Sheet">
+				    <thead>
+				    	<tr>
+				        	<th scope="col" style="width:25px;">Sr.</th>
+				            <th scope="col" style="width:180px;">Name</th>
+				            <th scope="col" style="width:150px;">AppLabel</th>
+				            <th scope="col" style="width:150px;">Model</th>
+				            {% if can_edit == 'true' %}
+				            <th scope="col" style="width:80px;">State</th>
+				            <th scope="col" style="width:80px;">Perm</th>
+				            <th scope="col" style="width:80px;">Group Sec.</th>
+				            {% endif %}
+				        </tr>
+		    		</thead>
+		    	    <tbody>
+					{% if ctlist|length %}
+						{% for contenttype in ctlist %}
+							<tr>
+								<td>{{ forloop.counter }}</td>
+						        <td>{{ contenttype.name }}</td>
+						        <td>{{ contenttype.app_label }}</td>
+						        <td>{{ contenttype.model }}</td>
+						      {% if can_edit == 'true' %}
+						      	<td><a href="/admin/security/contenttypes/{{contenttype.id}}/state/"><input type="button" value="State" /></a></td>
+						      	<td><a href="/admin/security/contenttypes/{{contenttype.id}}/perm/"><input type="button" value="Perm" /></a></td>
+						      	<td><a href="/admin/security/contenttypes/{{contenttype.id}}/GroupSecurity/"><input type="button" value="Group Sec." /></a></td>
+						      {% endif %}
+						    </tr>
+						{% endfor %}
+					{% else %}
+						<h1> there are no items </h1>
+					{% endif %}
+					
+				    </tbody>
+				</table>
+		</div>
+  
+  
+{% endblock %}
+

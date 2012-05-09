@@ -1,8 +1,10 @@
-from ThoughtXplore.txMisc.models import  MiscPermission ,StateContentType
+from ThoughtXplore.txMisc.models import  MiscPermission ,PermissionContentType
 from ThoughtXplore.CONFIG import LOGGER_MISC
 from ThoughtXplore.txMisc.DBFunctions.DatabaseFunctions import DBInsertPermission
 from ThoughtXplore.txMisc.DBFunctions.DBMessages import decode
 import logging
+
+
 
 class PermissionsClass():
     def __init__(self):
@@ -35,4 +37,13 @@ class PermissionsClass():
             return (1,perm_list)
         except:
             self.MiscLogger.exception('[%s] == Exception =='%('getAllPermissions'))
+            return (-1,[])
+        
+    def getAllPermissionsForAContentTypeByID(self,cid):
+        try:
+            perm_list = MiscPermission.objects.filter(permissioncontenttype__PermissionContentType__id=cid)
+            self.MiscLogger.debug("[%s] length of perm_list is %s"%('getAllPermissionsForAContentTypeByID',str(len(perm_list))))
+            return (1,perm_list)
+        except:
+            self.MiscLogger.exception('[%s] == Exception ==, cid = %s'%('getAllPermissionsForAContentTypeByID',cid))
             return (-1,[])

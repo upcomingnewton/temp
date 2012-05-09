@@ -9,12 +9,11 @@ OUT rescode INTEGER
 DECLARE 
     temp INTEGER;
     active INTEGER;
+    tempid INTEGER;
     ctid INTEGER;
 BEGIN 
 temp := 0;
-INSERT INTO "txMisc_permissioncontenttype"(
-            id, "Permission_id", "PermissionContentType_id", "PermissionActive")
-    VALUES (?, ?, ?, ?);
+
 
 IF EXISTS ( SELECT id FROM "txMisc_permissioncontenttype" WHERE "Permission_id"=Perm_id AND "PermissionContentType_id"=PermContentType_id AND "PermissionActive"=1 ) THEN
 		result := 2;
@@ -24,45 +23,37 @@ END IF;
 
 
 IF EXISTS ( SELECT id FROM "txMisc_permissioncontenttype" WHERE "Permission_id"=Perm_id AND "PermissionContentType_id"=PermContentType_id AND "PermissionActive"=0 ) THEN
-		result := 2;
-  		rescode := 71;
-		RETURN;
+		DELETE FROM "txMisc_permissioncontenttype"  WHERE "Permission_id"=Perm_id AND "PermissionContentType_id"=PermContentType_id;
+		GET DIAGNOSTICS temp := ROW_COUNT;
+		IF temp <> 1 THEN 
+			rescode := 73;
+			result := -1;
+        	RETURN;
+        END IF;
 END IF;
 
-	IF active == 0 THEN
-	END IF;
 
-END IF;
-
-
-IF active <> 1 THEN 
-	result := 2;
-	rescode := 62;
-	RETURN;
-END IF;
-
-UPDATE "txMisc_permissioncontenttype"
-  SET  "PermissionActive"=0
- WHERE id=id_to_delete;
+INSERT INTO "txMisc_permissioncontenttype"("Permission_id", "PermissionContentType_id", "PermissionActive")
+    									VALUES (Perm_id,PermContentType_id,1);
 GET DIAGNOSTICS temp := ROW_COUNT;
 IF temp <> 1 THEN 
-	rescode := 63;
+	rescode := 74;
 	result := -1;
         RETURN;
 END IF;
 
-
+SELECT id INTO tempid FROM "txMisc_permissioncontenttype" WHERE  "Permission_id"=Perm_id AND "PermissionContentType_id"=PermContentType_id;
 SELECT id INTO ctid FROM django_content_type WHERE app_label='txMisc' AND model ='permissioncontenttype';
 
 INSERT INTO "txMisc_securitylogs"(id, "User", "ContentType_id", "TimeStamp", ip, "Desc")
-VALUES(id_to_delete,by_user,ctid,now(),ip,'permissioncontenttype delete');
+VALUES(tempid,by_user,ctid,now(),ip,'insert txMisc_permissioncontenttype');
 GET DIAGNOSTICS temp := ROW_COUNT;
 IF temp <> 1 THEN 
 	rescode := 999;
 	result := -1;
         RETURN;
 ELSE
-	rescode := 65;
+	rescode := 75;
 	result := 1;
 RETURN;
 END IF;

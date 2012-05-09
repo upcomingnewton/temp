@@ -1,0 +1,63 @@
+CREATE OR REPLACE FUNCTION Security_StateContentType_Delete(
+StateId INTEGER,
+StateContentTypeId INTEGER,
+by_user INTEGER,
+ip VARCHAR,
+OUT result INTEGER,
+OUT rescode INTEGER
+) RETURNS RECORD AS $$
+DECLARE 
+    temp INTEGER;
+    active INTEGER;
+    tempid INTEGER;
+    ctid INTEGER;
+BEGIN 
+temp := 0;
+
+
+IF EXISTS ( SELECT id FROM "txMisc_statecontenttype" WHERE "State_id"=StateId AND "StateContentType_id"=StateContentTypeId AND "StateActive"=1 ) THEN
+		result := 2;
+  		rescode := 76;
+		RETURN;
+END IF;
+
+
+IF EXISTS (  SELECT id FROM "txMisc_statecontenttype" WHERE "State_id"=StateId AND "StateContentType_id"=StateContentTypeId AND "StateActive"=1 ) THEN
+		DELETE FROM "txMisc_statecontenttype"  WHERE "State_id"=StateId AND "StateContentType_id"=StateContentTypeId;
+		GET DIAGNOSTICS temp := ROW_COUNT;
+		IF temp <> 1 THEN 
+			rescode := 78;
+			result := -1;
+        	RETURN;
+        END IF;
+END IF;
+
+INSERT INTO "txMisc_statecontenttype"("State_id", "StateContentType_id", "StateActive")
+								VALUES ( StateId,StateContentTypeId,1);
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 79;
+	result := -1;
+        RETURN;
+END IF;
+
+SELECT id INTO tempid FROM "txMisc_statecontenttype" WHERE  "State_id"=StateId AND "StateContentType_id"=StateContentTypeId;
+SELECT id INTO ctid FROM django_content_type WHERE app_label='txMisc' AND model ='statecontenttype';
+
+INSERT INTO "txMisc_securitylogs"(id, "User", "ContentType_id", "TimeStamp", ip, "Desc")
+VALUES(tempid,by_user,ctid,now(),ip,'insert statecontenttype');
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 999;
+	result := -1;
+        RETURN;
+ELSE
+	rescode := 80;
+	result := 1;
+RETURN;
+END IF;
+
+
+RETURN;
+END;
+$$ LANGUAGE plpgsql;

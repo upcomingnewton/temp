@@ -36,7 +36,17 @@ class StatesClass():
         except:
             self.MiscLogger.exception('[%s] == Exception =='%('getAllStates'))
             return (-1,[])
+    
+    def getAllStatesForAContentTypeBYID(self,cid):
+        try:
+            states_list = MiscState.objects.filter(statecontenttype__StateContentType__id=cid)
+            self.MiscLogger.debug("[%s] length of states list is %s"%('getAllStatesForAContentTypeBYID',str(len(states_list))))
+            return (1,states_list)
+        except:
+            self.MiscLogger.exception('[%s] == Exception == cid = %s'%('getAllStatesForAContentTypeBYID',cid))
+            return (-1,[])
         
+    
     def getAllStatesForAContentTypeBYName(self,app_label_t,model_t):
         try:
             states_list = StateContentType.objects.filter(StateContentType__app_label=app_label_t,StateContentType__model= model_t)

@@ -32,11 +32,34 @@ def  ListStates(HttpRequest):
         return HttpResponseRedirect('/message/')
     
     
+def ListContentTypeStates(HttpRequest,cid):
+    ip = HttpRequest.META['REMOTE_ADDR']
+    msglist = AppendMessageList(HttpRequest)
+    try:
+        stateobj = StatesClass()
+        statelist = stateobj.getAllStatesForAContentTypeBYID(cid)
+        if statelist[0] == 1:
+            statelist = statelist[1]
+            if len(statelist) == 0:
+                msglist.append('There are no states defined for this content type yet')
+            HttpRequest.session[SESSION_MESSAGE] = msglist
+            return render_to_response('security/states/EditStates.html',{'statelist':statelist,'visible_list':'true','visible_create':'false',},context_instance=RequestContext(HttpRequest))
+        else:
+            LoggerMisc.error('[%s] ip = %s'%('ListStates',ip))
+            msglist.append('[ERROR][ListStates] %s'%(statelist[1]))
+            HttpRequest.session[SESSION_MESSAGE] = msglist
+            return HttpResponseRedirect('/message/')
+    except:
+        LoggerMisc.exception('[%s] EXCEPTION ip = %s'%('ListStates',ip))
+        msglist.append('Some error has occoured while processing your request')
+        HttpRequest.session[SESSION_MESSAGE] = msglist
+        return HttpResponseRedirect('/message/')
+    
 def CreateStateIndex(HttpRequest):
     ip = HttpRequest.META['REMOTE_ADDR']
     msglist = AppendMessageList(HttpRequest)
     try:
-        return render_to_response('security/states/EditStates.html',{'visible_list':'false','visible_create':'true',},context_instance=RequestContext(HttpRequest))
+        return render_to_response('security/states/EditStateContentType.html',{'visible_list':'false','visible_create':'true',},context_instance=RequestContext(HttpRequest))
     except:
         LoggerMisc.exception('[%s] EXCEPTION ip = %s'%('CreateStateIndex',ip))
         msglist.append('Some error has occoured while processing your request')

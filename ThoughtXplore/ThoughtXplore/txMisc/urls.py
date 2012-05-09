@@ -9,4 +9,8 @@ urlpatterns = patterns('',
                     url(r'^states/list/$','txMisc.views.StateViews.ListStates'),
                     url(r'^states/create/$','txMisc.views.StateViews.CreateStateIndex'),
                     url(r'^states/create/new/$','txMisc.views.StateViews.CreateState'),
+                    
+                     url(r'^perms/list/$','txMisc.views.PermissionViews.ListPermission'),
+                    url(r'^perms/create/$','txMisc.views.PermissionViews.CreatePermissionIndex'),
+                    url(r'^perms/create/new/$','txMisc.views.PermissionViews.CreatePermission'),
                        )

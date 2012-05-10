@@ -10,15 +10,10 @@ class UserContact(models.Model):
     Phoneno = models.CharField(max_length=15)
     AltEmailAdress = models.CharField(max_length=500)
     
-    Father_FirstName = models.CharField(max_length=500)
-    Father_MiddleName = models.CharField(max_length=500)
-    Father_LastName = models.CharField(max_length=500)
+    FatherName = models.CharField(max_length=1000)
     FatherContactNo = models.CharField(max_length=15)
     
-    MotherName = models.CharField(max_length=500)
-    Mother_FirstName = models.CharField(max_length=500)
-    Mother_MiddleName = models.CharField(max_length=500)
-    Mother_LastName = models.CharField(max_length=500)
+    MotherName = models.CharField(max_length=1000)
     MotherContactNo = models.CharField(max_length=15)
 
 

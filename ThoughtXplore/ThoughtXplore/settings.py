@@ -15,10 +15,10 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'thoughtxplore',                      # Or path to database file if using sqlite3.
-        'USER': 'thoughtxplore',                      # Not used with sqlite3.
-        'PASSWORD': 'thoughtxplore',                  # Not used with sqlite3.
-        'HOST': '0.0.0.0',                      # Set to empty string for localhost. Not used with sqlite3.
+        'NAME': 'testdb',                      # Or path to database file if using sqlite3.
+        'USER': 'test123',                      # Not used with sqlite3.
+        'PASSWORD': 'test123db',                  # Not used with sqlite3.
+        'HOST': '119.18.58.214',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
@@ -79,8 +79,8 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-   # '/home/nitin/Downloads/tx_latest/ThoughtXplore/ThoughtXplore/static',
-   '/home/nitin/projects/temp/ThoughtXplore/static',
+    '/home/nitin/Downloads/tx_latest/ThoughtXplore/ThoughtXplore/static',
+   #'/home/nitin/projects/temp/ThoughtXplore/static',
 )
 
 # List of finder classes that know how to find static files in
@@ -117,8 +117,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-   # "/home/nitin/Downloads/tx_latest/ThoughtXplore/ThoughtXplore/templates"
-   '/home/nitin/projects/temp/ThoughtXplore/templates',
+    "/home/nitin/Downloads/tx_latest/ThoughtXplore/ThoughtXplore/templates",
+   #'/home/nitin/projects/temp/ThoughtXplore/templates',
 )
 
 INSTALLED_APPS = (
@@ -169,6 +169,10 @@ LOGGING = LOG_SETTINGS = {
                                     'handlers':['file_misc','smtp'],
                                     'level':'DEBUG',
                                     },
+               'LOGGER_QueryLogger':{
+                                     'handlers':['file_query','smtp'],
+                                    'level':'DEBUG',
+                   },
                },
     'handlers': {
         'file_user': {
@@ -184,6 +188,14 @@ LOGGING = LOG_SETTINGS = {
             'level': 'DEBUG',
             'formatter': 'detailed',
             'filename': '/home/nitin/logs/tx_misc_system',
+            'maxBytes': 10485760,
+            'backupCount': 5,
+        },
+         'file_query': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'filename': '/home/nitin/logs/tx_queries',
             'maxBytes': 10485760,
             'backupCount': 5,
         },

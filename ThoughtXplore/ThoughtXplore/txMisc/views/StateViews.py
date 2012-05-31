@@ -72,15 +72,15 @@ def CreateState(HttpRequest):
     try:
         name = ''
         desc = ''
-        if 'EditState_Create_Name' in HttpRequest.POST:
-            name = HttpRequest.POST['EditState_Create_Name']
-            if len(name) < 4:
+        if 'EditStateCreate_Name' in HttpRequest.POST:
+            name = HttpRequest.POST['EditStateCreate_Name']
+            if len(name) < 1:
                 msglist.append('Proper Name required')
         else:
             msglist.append('Name required')
-        if 'EditState_Create_Desc' in HttpRequest.POST:
-            desc = HttpRequest.POST['EditState_Create_Desc']
-            if len(desc) < 4:
+        if 'EditStateCreate_Desc' in HttpRequest.POST:
+            desc = HttpRequest.POST['EditStateCreate_Desc']
+            if len(desc) < 1:
                 msglist.append('Proper Desc required')
         else:
             msglist.append('Desc required')
@@ -90,7 +90,7 @@ def CreateState(HttpRequest):
             return HttpResponseRedirect('/admin/security/states/create/')
         else:
             StatesClassObj = StatesClass()
-            res = StatesClassObj.CreateState(name, desc, 1, ip)
+            res = StatesClassObj.CreateState(name, desc, by, ip)
             msglist.append('result code : %s , message %s'%(res[0],res[1]))
             HttpRequest.session[SESSION_MESSAGE] = msglist
             return HttpResponseRedirect('/user/group/create/')
